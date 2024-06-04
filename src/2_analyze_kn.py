@@ -11,7 +11,7 @@ from collections import Counter
 from matplotlib import pyplot as plt
 import random
 
-kn_dir = '../results/kn/'
+kn_dir = '../results/'
 fig_dir = '../results/figs/'
 
 # =========== stat kn_bag ig ==============
