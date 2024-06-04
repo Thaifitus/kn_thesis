@@ -16,7 +16,7 @@ fig_dir = '../results/figs/'
 
 # =========== stat kn_bag ig ==============
 
-y_points = []
+# y_points = []
 tot_bag_num = 0
 tot_kneurons = 0
 kn_bag_counter = Counter()
