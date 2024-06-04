@@ -17,6 +17,8 @@ for k, v in modified_rlts.items():
     rel_set.update([rel])
 
 rel_list = sorted(list(rel_set))
+if not os.path.exists(fig_dir): # create '../results/figs/'
+    os.makedirs(fig_dir)
 
 # ================================== suppress ===========================================
 plt.figure(figsize=(22, 5.5), dpi=100)
@@ -54,7 +56,6 @@ plt.savefig(os.path.join(fig_dir, 'suppress.pdf'))
 plt.close()
 
 # ================================== amplify ===========================================
-
 plt.figure(figsize=(22, 5.5), dpi=100)
 
 x_labels = []
