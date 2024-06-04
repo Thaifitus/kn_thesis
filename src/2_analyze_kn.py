@@ -1,6 +1,6 @@
 '''
 Chương trình thống kê nơ-ron tri thức dựa trên kết quả từ "/src/2_get_kn.py". Tập tin đầu vào và đầu ra tương ứng của chương trình bao gồm:
-- Input: các tập tin .json chứa nơ-ron tri thức tương ứng với từng quan hệ từ "/src/2_get_kn.py" ở đường dẫn "/results/kn".
+- Input: các tập tin "base_kn_bag-{rel}.json" và "kn_bag-{rel}.json" chứa nơ-ron tri thức tương ứng với từng quan hệ từ "/src/2_get_kn.py".
 - Output: một (hai gồm baseline và IG) tập tin .pdf trực quan sự phân bố các nơ-ron tri thức và các thông tin thống kê được in ra màn hình.
 '''
 
