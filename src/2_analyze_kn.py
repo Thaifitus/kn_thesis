@@ -1,6 +1,6 @@
 '''
 Chương trình thống kê nơ-ron tri thức dựa trên kết quả từ "/src/2_get_kn.py". Tập tin đầu vào và đầu ra tương ứng của chương trình bao gồm:
-- Input: các tập tin .json chứa nơ-ron tri thức tương ứng với từng quan hệ từ "/src/2_get_kn.py" ở đường dẫn "/results/kn".
+- Input: các tập tin "base_kn_bag-{rel}.json" và "kn_bag-{rel}.json" chứa nơ-ron tri thức tương ứng với từng quan hệ từ "/src/2_get_kn.py".
 - Output: một (hai gồm baseline và IG) tập tin .pdf trực quan sự phân bố các nơ-ron tri thức và các thông tin thống kê được in ra màn hình.
 '''
 
@@ -142,7 +142,7 @@ for filename in os.listdir(kn_dir): # loop considers each "kn_bag-{rel}.json" fi
 # ig inner
 inner_ave_intersec = []
 for rel, kn_bag_list in kn_bag_list_per_rel.items():
-    print(f'calculating {rel}')
+    # print(f'calculating {rel}')
     len_kn_bag_list = len(kn_bag_list) # number of bag (template prompt)
     for i in range(0, len_kn_bag_list): # considers one bag with the others
         for j in range(i + 1, len_kn_bag_list):
@@ -157,7 +157,7 @@ print(f'ig kn has on average {inner_ave_intersec} inner kn interseciton')
 # this process is similar to the above "ig inner" process excepts (1) number of kn_bag_2 is 100 (compared in 100 times) (2) kn_bag_2 is random choice
 inter_ave_intersec = []
 for rel, kn_bag_list in kn_bag_list_per_rel.items():
-    print(f'calculating {rel}')
+    # print(f'calculating {rel}')
     len_kn_bag_list = len(kn_bag_list)
     for i in range(0, len_kn_bag_list):
         for j in range(0, 100):
@@ -184,7 +184,7 @@ for filename in os.listdir(kn_dir):
 # base inner
 inner_ave_intersec = []
 for rel, kn_bag_list in kn_bag_list_per_rel.items():
-    print(f'calculating {rel}')
+    # print(f'calculating {rel}')
     len_kn_bag_list = len(kn_bag_list)
     for i in range(0, len_kn_bag_list):
         for j in range(i + 1, len_kn_bag_list):
@@ -198,7 +198,7 @@ print(f'base kn has on average {inner_ave_intersec} inner kn interseciton')
 # base inter
 inter_ave_intersec = []
 for rel, kn_bag_list in kn_bag_list_per_rel.items():
-    print(f'calculating {rel}')
+    # print(f'calculating {rel}')
     len_kn_bag_list = len(kn_bag_list)
     for i in range(0, len_kn_bag_list):
         for j in range(0, 100):
