@@ -439,7 +439,7 @@ def main():
         with torch.no_grad():
             for layer, pos in kn_rel:
                 # model.bert.encoder.layer[layer].output.dense.weight[:, pos] = unk_emb
-                # model.bert.encoder.layer[layer].intermediate.dense.weight[pos, :] = torch.zeros(768) # weight.size() = (3072, 768); cannot erase in intermediate (BertIntermediate) layer because of GELU function
+                # model.bert.encoder.layer[layer].intermediate.dense.weight[pos, :] = torch.zeros(768) # weight.size() = (3072, 768) ---> CANNOT erase in intermediate (BertIntermediate) layer because of GELU function
                 model.bert.encoder.layer[layer].output.dense.weight[:, pos] = torch.zeros(768) # weight.size() == (768, 3072)
         # ============================================== erase knowledge end =============================================================
 
