@@ -5,7 +5,7 @@ BERT MLM runner
 '''
 Chương trình sử dụng hàm eval_modification() thực hiện khảo sát ở mục 4.5 (suppressing, amplifying) thuộc bài báo "Knowledge Neurons in Pretrained Transformers". Tập tin đầu vào và đầu ra của chương trình bao gồm:
 - Input: các tập tin "base_kn_bag-{rel}.json" hoặc "kn_bag-{rel}.json" là kết quả từ tập tin "2_get_kn.py"
-- Output: {prefix}modify_activation_rlt.json với prefix là "base_" hoặc "" chứa sự chênh lệch xác xuất dự đoán từ [MASK] là gold label (ground truth) tương ứng
+- Output: tập tin "3_modify_activation.args.json" chứa cấu hình của chương trình; tập tin kết quả "{prefix}modify_activation_rlt.json" với prefix là "base_" hoặc "" chứa sự chênh lệch xác xuất dự đoán từ [MASK] là gold label (ground truth) tương ứng
 '''
 
 import logging
@@ -356,42 +356,42 @@ def main():
                     rlt_dict[save_key]['eh_own:ave_delta'].append((int_gold_prob - ori_gold_prob).item())
 
                 # =============== eval another bag: remove & enhance ================
-                oth_relations = list(eval_bag_list_perrel.keys())
-                oth_relations = [rel for rel in oth_relations if rel != relation]
-                oth_relation = random.choice(oth_relations)
-                oth_idx = random.randint(0, len(eval_bag_list_perrel[oth_relation]) - 1)
-                eval_bag = eval_bag_list_perrel[oth_relation][oth_idx]
-                for eval_example in eval_bag:
-                    eval_features, tokens_info = example2feature(eval_example, args.max_seq_length, tokenizer)
-                    # convert features to long type tensors
-                    baseline_ids, input_ids, input_mask, segment_ids = eval_features['baseline_ids'], eval_features['input_ids'], eval_features['input_mask'], eval_features['segment_ids']
-                    baseline_ids = torch.tensor(baseline_ids, dtype=torch.long).unsqueeze(0)
-                    input_ids = torch.tensor(input_ids, dtype=torch.long).unsqueeze(0)
-                    input_mask = torch.tensor(input_mask, dtype=torch.long).unsqueeze(0)
-                    segment_ids = torch.tensor(segment_ids, dtype=torch.long).unsqueeze(0)
-                    baseline_ids = baseline_ids.to(device)
-                    input_ids = input_ids.to(device)
-                    input_mask = input_mask.to(device)
-                    segment_ids = segment_ids.to(device)
+                # oth_relations = list(eval_bag_list_perrel.keys())
+                # oth_relations = [rel for rel in oth_relations if rel != relation]
+                # oth_relation = random.choice(oth_relations)
+                # oth_idx = random.randint(0, len(eval_bag_list_perrel[oth_relation]) - 1)
+                # eval_bag = eval_bag_list_perrel[oth_relation][oth_idx]
+                # for eval_example in eval_bag:
+                #     eval_features, tokens_info = example2feature(eval_example, args.max_seq_length, tokenizer)
+                #     # convert features to long type tensors
+                #     baseline_ids, input_ids, input_mask, segment_ids = eval_features['baseline_ids'], eval_features['input_ids'], eval_features['input_mask'], eval_features['segment_ids']
+                #     baseline_ids = torch.tensor(baseline_ids, dtype=torch.long).unsqueeze(0)
+                #     input_ids = torch.tensor(input_ids, dtype=torch.long).unsqueeze(0)
+                #     input_mask = torch.tensor(input_mask, dtype=torch.long).unsqueeze(0)
+                #     segment_ids = torch.tensor(segment_ids, dtype=torch.long).unsqueeze(0)
+                #     baseline_ids = baseline_ids.to(device)
+                #     input_ids = input_ids.to(device)
+                #     input_mask = input_mask.to(device)
+                #     segment_ids = segment_ids.to(device)
 
-                    # record [MASK]'s position
-                    tgt_pos = tokens_info['tokens'].index('[MASK]')
-                    # record [MASK]'s gold label
-                    gold_label = tokenizer.convert_tokens_to_ids(tokens_info['gold_obj'])
+                #     # record [MASK]'s position
+                #     tgt_pos = tokens_info['tokens'].index('[MASK]')
+                #     # record [MASK]'s gold label
+                #     gold_label = tokenizer.convert_tokens_to_ids(tokens_info['gold_obj'])
 
-                    _, logits = model(input_ids=input_ids, attention_mask=input_mask, token_type_ids=segment_ids, tgt_pos=tgt_pos, tgt_layer=0)  # (1, n_vocab)
-                    ori_gold_prob = F.softmax(logits, dim=-1)[0, gold_label]  # scalar
+                #     _, logits = model(input_ids=input_ids, attention_mask=input_mask, token_type_ids=segment_ids, tgt_pos=tgt_pos, tgt_layer=0)  # (1, n_vocab)
+                #     ori_gold_prob = F.softmax(logits, dim=-1)[0, gold_label]  # scalar
 
-                    # remove
-                    _, logits = model(input_ids=input_ids, attention_mask=input_mask, token_type_ids=segment_ids, tgt_pos=tgt_pos, tgt_layer=0, imp_pos=kn_bag, imp_op='remove')  # (1, n_vocab)
-                    int_gold_prob = F.softmax(logits, dim=-1)[0, gold_label]  # scalar
-                    rlt_dict[save_key]['oth:ori_prob'].append(ori_gold_prob.item())
-                    rlt_dict[save_key]['rm_oth:ave_delta'].append((int_gold_prob - ori_gold_prob).item())
+                #     # remove
+                #     _, logits = model(input_ids=input_ids, attention_mask=input_mask, token_type_ids=segment_ids, tgt_pos=tgt_pos, tgt_layer=0, imp_pos=kn_bag, imp_op='remove')  # (1, n_vocab)
+                #     int_gold_prob = F.softmax(logits, dim=-1)[0, gold_label]  # scalar
+                #     rlt_dict[save_key]['oth:ori_prob'].append(ori_gold_prob.item())
+                #     rlt_dict[save_key]['rm_oth:ave_delta'].append((int_gold_prob - ori_gold_prob).item())
 
-                    # enhance
-                    _, logits = model(input_ids=input_ids, attention_mask=input_mask, token_type_ids=segment_ids, tgt_pos=tgt_pos, tgt_layer=0, imp_pos=kn_bag, imp_op='enhance')  # (1, n_vocab)
-                    int_gold_prob = F.softmax(logits, dim=-1)[0, gold_label]  # scalar
-                    rlt_dict[save_key]['eh_oth:ave_delta'].append((int_gold_prob - ori_gold_prob).item())
+                #     # enhance
+                #     _, logits = model(input_ids=input_ids, attention_mask=input_mask, token_type_ids=segment_ids, tgt_pos=tgt_pos, tgt_layer=0, imp_pos=kn_bag, imp_op='enhance')  # (1, n_vocab)
+                #     int_gold_prob = F.softmax(logits, dim=-1)[0, gold_label]  # scalar
+                #     rlt_dict[save_key]['eh_oth:ave_delta'].append((int_gold_prob - ori_gold_prob).item())
 
             # record running time
             toc = time.perf_counter()
@@ -404,15 +404,15 @@ def main():
                     rlt_dict[save_key][k] = np.array(rlt_dict[save_key][k]).mean()
             rlt_dict[save_key]['rm_own:ave_delta_ratio'] = rlt_dict[save_key]['rm_own:ave_delta'] / rlt_dict[save_key]['own:ori_prob']
             rlt_dict[save_key]['eh_own:ave_delta_ratio'] = rlt_dict[save_key]['eh_own:ave_delta'] / rlt_dict[save_key]['own:ori_prob']
-            rlt_dict[save_key]['rm_oth:ave_delta_ratio'] = rlt_dict[save_key]['rm_oth:ave_delta'] / rlt_dict[save_key]['oth:ori_prob']
-            rlt_dict[save_key]['eh_oth:ave_delta_ratio'] = rlt_dict[save_key]['eh_oth:ave_delta'] / rlt_dict[save_key]['oth:ori_prob']
+            # rlt_dict[save_key]['rm_oth:ave_delta_ratio'] = rlt_dict[save_key]['rm_oth:ave_delta'] / rlt_dict[save_key]['oth:ori_prob']
+            # rlt_dict[save_key]['eh_oth:ave_delta_ratio'] = rlt_dict[save_key]['eh_oth:ave_delta'] / rlt_dict[save_key]['oth:ori_prob']
             # print(save_key, '==============>', rlt_dict[save_key])
 
         # write to file for all relations
-        with open(os.path.join(args.kn_dir, f'{prefix}modify_activation_rlt.json'), 'w') as fw:
+        with open(os.path.join(args.output_dir, f'{prefix}modify_activation_rlt.json'), 'w') as fw:
             json.dump(rlt_dict, fw, indent=2)
 
-    eval_modification('')
+    # eval_modification('')
     eval_modification('base_')
 
 if __name__ == "__main__":
