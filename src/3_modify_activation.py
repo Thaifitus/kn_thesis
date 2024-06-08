@@ -5,7 +5,7 @@ BERT MLM runner
 '''
 Chương trình sử dụng hàm eval_modification() thực hiện khảo sát ở mục 4.5 (suppressing, amplifying) thuộc bài báo "Knowledge Neurons in Pretrained Transformers". Tập tin đầu vào và đầu ra của chương trình bao gồm:
 - Input: các tập tin "base_kn_bag-{rel}.json" hoặc "kn_bag-{rel}.json" là kết quả từ tập tin "2_get_kn.py"
-- Output: tập tin "3_modify_activation.args.json" chứa cấu hình của chương trình; tập tin kết quả "{prefix}modify_activation_rlt.json" với prefix là "base_" hoặc "" chứa sự chênh lệch xác xuất dự đoán từ [MASK] là gold label (ground truth) tương ứng
+- Output: tập tin "3_modify_activation.args.json" chứa cấu hình của chương trình; tập tin kết quả "{prefix}modify_activation_rlt.json" với prefix là "base_" hoặc "" chứa sự chênh lệch xác xuất dự đoán từ [MASK] là ground truth (gold label) tương ứng
 '''
 
 import logging

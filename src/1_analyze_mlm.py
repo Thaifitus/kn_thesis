@@ -359,7 +359,7 @@ def main():
 
     # save args
     os.makedirs(args.output_dir, exist_ok=True)
-    json.dump(args.__dict__, open(os.path.join(args.output_dir, args.output_prefix + '.args.json'), 'w'), sort_keys=True, indent=2)
+    json.dump(args.__dict__, open(os.path.join(args.output_dir, '1_analyze_mlm' + '.args.json'), 'w'), sort_keys=True, indent=2)
 
     # init tokenizer
     tokenizer = BertTokenizer.from_pretrained(args.bert_model, do_lower_case=args.do_lower_case)
