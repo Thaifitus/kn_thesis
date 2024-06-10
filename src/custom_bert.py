@@ -240,7 +240,7 @@ class BertIntermediate(nn.Module): #where they consider the knowledge neuron
                 if imp_op == 'remove':
                     hidden_states[:, tgt_pos, pos] = 0.0
                 if imp_op == 'enhance':
-                    hidden_states[:, tgt_pos, pos] *= 2.0
+                    hidden_states[:, tgt_pos, pos] *= 4.0
                 if imp_op == 'return':
                     imp_weights.append(hidden_states[0, tgt_pos, pos].item())
 
