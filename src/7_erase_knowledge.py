@@ -333,7 +333,7 @@ def main():
         for kn_bag in kn_bag_list:
             for kn in kn_bag:
                 kn_counter.update([pos_list2str(kn)])
-        most_common_kn = kn_counter.most_common(40)
+        most_common_kn = kn_counter.most_common(20)
         print(most_common_kn)
         kn_rel = [pos_str2list(kn_str[0]) for kn_str in most_common_kn] # e.g kn_rel == [[2, 3071], [1, 3071], ...]
 

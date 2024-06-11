@@ -5,7 +5,7 @@ import os
 
 kn_dir = '../3_modify/'
 fig_dir = '../figs/'
-with open(os.path.join(kn_dir, 'modify_activation_rlt.json'), 'r') as f:
+with open(os.path.join(kn_dir, 'modify_activation_rlt_6.json'), 'r') as f:
     modified_rlts = json.load(f)
 with open(os.path.join(kn_dir, 'base_modify_activation_rlt.json'), 'r') as f:
     base_modified_rlts = json.load(f)
