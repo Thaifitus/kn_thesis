@@ -4,7 +4,7 @@ Input: tập tin "data_all_allbags.json"
 Output: một tập tin csv chứa tên các relation, số lượng template và số lượng prompt tương ứng
 '''
 
-import json, jsonlines
+import json
 import os
 import csv
 
@@ -24,15 +24,16 @@ def count_prompt(data_directory, out_dir):
 
 	global total_prompt, total_template
 
-	# Read data
-	if os.path.exists(data_directory): # read if data file exists
+	# READ DATA
+	# read if data file exists; else stop the program
+	if os.path.exists(data_directory):
 		with open(data_directory, 'r') as f:
 			eval_bag_list_perrel = json.load(f)
-	else: # stop the program if data file does not exist
+	else:
 	 	print("Data does not exist")
 	 	return
 
-	# Counting
+	# COUNTING
 	count_record = []
 	for relation, eval_bag_list in eval_bag_list_perrel.items(): # loop considers each relation
 		# Initialize record
@@ -52,18 +53,15 @@ def count_prompt(data_directory, out_dir):
 
 		count_record.append(rel_dict)
 
-	# Write file for all relations
+	# WRITE FILE FOR ALL RELATIONS
 	with open(out_dir, 'w') as fw:
-		# creating a csv dict writer object
+		# Creating a csv dict writer object
 		writer = csv.DictWriter(fw, fieldnames=count_record[0].keys())
-
-		# writing headers (field names)
+		# Writing headers (field names)
 		writer.writeheader()
-	
-		# writing data rows
+		# Writing data rows
 		writer.writerows(count_record)
-		
-		# Write total number of template and prompt to file
+		# Write total number of template and prompt
 		fw.write(f'\nNumber of templates: {total_template} - Number of prompts: {total_prompt}')
 
 if __name__ == "__main__":
