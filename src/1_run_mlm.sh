@@ -1,5 +1,5 @@
 python 1_analyze_mlm.py \
-    --bert_model bert-base-cased \
+    --bert_model bert-large-cased \
     --data_path ../data/PARAREL/data_all.json \
     --tmp_data_path ../data/PARAREL/data_all_allbags.json \
     --output_dir ../results/ \
