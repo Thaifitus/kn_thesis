@@ -17,7 +17,7 @@ for k, v in modified_rlts.items():
     rel_set.update([rel])
 
 rel_list = sorted(list(rel_set))
-if not os.path.exists(fig_dir): # create '../results/figs/'
+if not os.path.exists(fig_dir): # create figure directory
     os.makedirs(fig_dir)
 
 # ================================== suppress ===========================================
