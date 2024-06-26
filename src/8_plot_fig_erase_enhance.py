@@ -4,7 +4,7 @@ import numpy as np
 import os
 
 kn_dir = '../3_modify/'
-fig_dir = '../figs/'
+fig_dir = './figs/'
 with open(os.path.join(kn_dir, 'modify_activation_rlt.json'), 'r') as f:
     modified_rlts = json.load(f)
 with open(os.path.join(kn_dir, 'base_modify_activation_rlt.json'), 'r') as f:
@@ -42,7 +42,7 @@ ys = np.array(y_values)
 print(ys.mean(axis=0))
 
 plt.xticks([i * 3 + 1.5 for i in range(len(x_labels))], labels=x_labels)
-plt.bar(x1, ys[:, 0], width=1, edgecolor='black', hatch="//", color='#0165fc', label="Ours")
+plt.bar(x1, ys[:, 0], width=1, edgecolor='black', hatch="//", color='#0165fc', label="Integrated gradients")
 plt.bar(x2, ys[:, 1], width=1, edgecolor='black', hatch="\\\\", color='#bfefff', label="Baseline")
 plt.yticks(np.arange(-0.6, 0.3, 0.1), [f'{y}%' for y in np.arange(-60, 30, 10)], fontsize=20)
 plt.xlim(-1, 3 * len(x_labels) + 1)
