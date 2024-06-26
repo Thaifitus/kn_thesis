@@ -12,7 +12,7 @@ from matplotlib import pyplot as plt
 import random
 
 kn_dir = '../results/'
-fig_dir = '../results/figs/'
+fig_dir = '../figs/'
 
 # =========== stat kn_bag ig ==============
 
@@ -86,7 +86,7 @@ plt.savefig(os.path.join(fig_dir, 'kneurons_distribution.pdf'), dpi=100)
 plt.close()
 
 # BASELINE
-plt.figure(figsize=(8, 3))
+plt.figure(figsize=(8, 5))
 
 x = np.array([i + 1 for i in range(12)])
 y = np.array([base_kn_bag_counter[i] for i in range(12)])
